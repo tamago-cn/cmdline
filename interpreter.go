@@ -10,7 +10,6 @@ import (
 	"github.com/chzyer/readline"
 	"github.com/cosiner/argv"
 	log "github.com/sirupsen/logrus"
-	"github.com/tamago-cn/cfg"
 )
 
 func init() {
@@ -18,7 +17,6 @@ func init() {
 		Prompt:      "cmdline",
 		HistoryFile: "/tmp/cmdline.tmp",
 	}
-	cfg.RegistSection("interpreter", conf, nil, nil)
 	Regist("cmdline", "run", Run, "执行脚本文件", `run <filename>`, []*Param{
 		&Param{Name: "filename", Type: "string", Necessity: true, Desc: "脚本文件名"},
 	})
@@ -27,6 +25,12 @@ func init() {
 var (
 	conf *Conf
 )
+
+// Setup 解释器设置
+func Setup(prompt string, historyFile string) {
+	conf.Prompt = prompt
+	conf.HistoryFile = historyFile
+}
 
 // Conf 解释器配置
 type Conf struct {
